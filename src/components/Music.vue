@@ -46,20 +46,60 @@
     <div class="music-list" v-show="musicListShow" @click="closeMusicList()">
       <Transition name="zoom">
         <div class="list" v-show="musicListShow" @click.stop>
-          <close-one
-            class="close"
-            theme="filled"
-            size="28"
-            fill="#ffffff60"
-            @click="closeMusicList()"
-          />
-          <Player
-            ref="playerRef"
-            :songServer="playerData.server"
-            :songType="playerData.type"
-            :songId="playerData.id"
-            :volume="volumeNum"
-          />
+          <!-- 移除了关闭按钮 -->
+          <div class="music-list-header">
+            <h3>我的音乐列表</h3>
+            <span class="music-count">{{ store.getMusicList.length }} 首音乐</span>
+          </div>
+          <div class="music-list-content">
+            <div class="music-detail-player">
+              <Player
+                ref="playerRef"
+                :songServer="playerData.server"
+                :songType="playerData.type"
+                :songId="playerData.id"
+                :volume="volumeNum"
+                :listFolded="true"
+              />
+            </div>
+            <div class="music-list-items">
+              <div class="music-item-header">
+                <span class="index">序号</span>
+                <span class="title">标题</span>
+                <span class="artist">艺术家</span>
+                <span class="action">操作</span>
+              </div>
+              <div class="music-items">
+                <div 
+                  v-for="(item, index) in store.getMusicList" 
+                  :key="index"
+                  class="music-item" 
+                  :class="{ active: store.currentMusicIndex === index }"
+                  @click="playMusic(index)"
+                >
+                  <span class="index">{{ index + 1 }}</span>
+                  <span class="title">{{ item.name }}</span>
+                  <span class="artist">{{ item.artist }}</span>
+                  <div class="action">
+                    <play-one 
+                      v-if="store.currentMusicIndex !== index || !store.playerState" 
+                      theme="filled" 
+                      size="20" 
+                      fill="#efefef" 
+                      class="play-btn"
+                    />
+                    <pause-one 
+                      v-else 
+                      theme="filled" 
+                      size="20" 
+                      fill="#efefef" 
+                      class="pause-btn"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </Transition>
     </div>
@@ -70,6 +110,7 @@
 import {
   GoStart,
   PlayOne,
+  PauseOne,
   Pause,
   GoEnd,
   CloseOne,
@@ -79,6 +120,8 @@ import {
 } from "@icon-park/vue-next";
 import Player from "@/components/Player.vue";
 import { mainStore } from "@/store";
+
+import localMusicConfig from '@/assets/localMusic.json';
 const store = mainStore();
 
 // 音量条数据
@@ -97,13 +140,11 @@ const playerData = reactive({
 // 开启播放列表
 const openMusicList = () => {
   musicListShow.value = true;
-  playerRef.value.toggleList();
 };
 
 // 关闭播放列表
 const closeMusicList = () => {
   musicListShow.value = false;
-  playerRef.value.toggleList();
 };
 
 // 音乐播放暂停
@@ -128,7 +169,24 @@ onMounted(() => {
   });
   // 挂载方法至 window
   window.$openList = openMusicList;
+  
+  // 初始化时同步本地音乐列表到store
+  if (localMusicConfig && localMusicConfig.musicList) {
+    store.setMusicList(localMusicConfig.musicList);
+  }
 });
+
+// 播放指定的音乐
+const playMusic = (index) => {
+  if (playerRef.value && store.getMusicList[index]) {
+    store.currentMusicIndex = index;
+    // 触发播放
+    playerRef.value.skipToIndex(index);
+    playerRef.value.playToggle();
+  }
+};
+
+
 
 // 监听音量变化
 watch(
@@ -258,9 +316,6 @@ watch(
   z-index: 1;
   .list {
     position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     top: calc(50% - 300px);
     left: calc(50% - 320px);
     width: 640px;
@@ -271,6 +326,8 @@ watch(
     @media (max-width: 720px) {
       left: calc(50% - 45%);
       width: 90%;
+      top: 10%;
+      height: 80%;
     }
     .close {
       position: absolute;
@@ -284,6 +341,122 @@ watch(
       }
       &:active {
         transform: scale(0.95);
+      }
+    }
+    .music-list-header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: calc(100% - 40px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h3 {
+        color: #efefef;
+        margin: 0;
+        font-size: 18px;
+      }
+      .music-count {
+        color: #efefef80;
+        font-size: 14px;
+      }
+    }
+    .music-list-content {
+      width: 100%;
+      height: 100%;
+      padding: 70px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      .music-detail-player {
+        margin-bottom: 16px;
+        .aplayer {
+          width: 100%;
+        }
+      }
+      .music-list-items {
+        flex: 1;
+        overflow: hidden;
+        background-color: #ffffff26;
+        border-radius: 6px;
+        .music-item-header {
+          display: flex;
+          padding: 12px 20px;
+          background-color: #ffffff40;
+          color: #efefef;
+          font-size: 14px;
+          border-bottom: 1px solid #ffffff26;
+          .index {
+            width: 30px;
+            text-align: center;
+          }
+          .title {
+            flex: 1;
+            margin-left: 20px;
+          }
+          .artist {
+            width: 120px;
+            text-align: center;
+          }
+          .action {
+            width: 40px;
+            text-align: center;
+          }
+        }
+        .music-items {
+          height: calc(100% - 45px);
+          overflow-y: auto;
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+          &::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          &::-webkit-scrollbar-thumb {
+            background: #ffffff40;
+            border-radius: 3px;
+          }
+          &::-webkit-scrollbar-thumb:hover {
+            background: #ffffff66;
+          }
+          .music-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #efefef;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            &:hover {
+              background-color: #ffffff33;
+            }
+            &.active {
+              background-color: #ffffff4d;
+            }
+            .index {
+              width: 30px;
+              text-align: center;
+              color: #efefef80;
+            }
+            .title {
+              flex: 1;
+              margin-left: 20px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .artist {
+              width: 120px;
+              text-align: center;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              color: #efefef80;
+            }
+            .action {
+              width: 40px;
+              text-align: center;
+            }
+          }
+        }
       }
     }
   }

@@ -25,6 +25,8 @@ export const mainStore = defineStore("main", {
       playerAutoplay: false, // 是否自动播放
       playerLoop: "all", // 循环播放 "all", "one", "none"
       playerOrder: "list", // 循环顺序 "list", "random"
+      musicList: [], // 音乐列表
+      currentMusicIndex: 0, // 当前播放的音乐索引
     };
   },
   getters: {
@@ -42,6 +44,10 @@ export const mainStore = defineStore("main", {
     // 获取页面宽度
     getInnerWidth(state) {
       return state.innerWidth;
+    },
+    // 获取音乐列表
+    getMusicList(state) {
+      return state.musicList;
     },
   },
   actions: {
@@ -73,6 +79,14 @@ export const mainStore = defineStore("main", {
     // 更改壁纸加载状态
     setImgLoadStatus(value) {
       this.imgLoadStatus = value;
+    },
+    // 设置音乐列表
+    setMusicList(list) {
+      this.musicList = list;
+    },
+    // 设置当前音乐索引
+    setCurrentMusicIndex(index) {
+      this.currentMusicIndex = index;
     },
   },
   persist: {

@@ -1,0 +1,49 @@
+{
+  "musicList": [
+    {
+      "name": "文爱",
+      "artist": "CG、贺敬轩",
+      "url": "/music/collection/文爱.mp3",
+      "cover": "https://picsum.photos/id/25/300/300",
+      "lrc": "[00:00.00]文爱 - 未知艺术家\n[00:10.00]这是一首添加的新歌\n[00:20.00]请欣赏"
+    },
+    {
+      "name": "京剧猫",
+      "artist": "动画原声带",
+      "url": "/music/collection/京剧猫.mp3",
+      "cover": "https://picsum.photos/id/20/300/300",
+      "lrc": "[00:00.00]京剧猫 - 动画原声带\n[00:05.00]星罗班 闯天下 无所畏惧\n[00:10.00]梦想的力量 永远不放弃\n[00:15.00]面对困难 勇敢向前\n[00:20.00]京剧猫的信念 永不改变"
+    },
+    {
+      "name": "我的未来式",
+      "artist": "郭采洁",
+      "url": "/music/collection/我的未来式.mp3",
+      "cover": "https://picsum.photos/id/40/300/300",
+      "lrc": "[00:00.00]我的未来式 - 郭采洁\n[00:10.00]我的未来式 由我做主\n[00:20.00]跳整天的舞 玩耍整片屏幕"
+    },
+    {
+      "name": "这场青春值得骄傲",
+      "artist": "未知艺术家",
+      "url": "/music/collection/这场青春值得骄傲.mp3",
+      "cover": "https://picsum.photos/id/41/300/300",
+      "lrc": "[00:00.00]这场青春值得骄傲 - 未知艺术家\n[00:10.00]这场青春 值得骄傲\n[00:20.00]勇敢向前 追逐梦想"
+    },
+    {
+      "name": "海阔天空",
+      "artist": "Beyond",
+      "url": "/music/collection/海阔天空.mp3",
+      "cover": "https://picsum.photos/id/42/300/300",
+      "lrc": "[00:00.00]海阔天空 - Beyond\n[00:10.00]今天我 寒夜里看雪飘过\n[00:20.00]怀着冷却了的心窝漂远方"
+    },
+    {
+      "name": "倒数",
+      "artist": "G.E.M.邓紫棋",
+      "url": "/music/collection/倒数.mp3",
+      "cover": "https://picsum.photos/id/43/300/300",
+      "lrc": "[00:00.00]倒数 - G.E.M.邓紫棋\n[00:10.00]时间倒数了 我们剩下的快乐\n[00:20.00]缺氧的我 以为自己能飞"
+    }
+  ],
+  "defaultVolume": 0.7,
+  "autoplay": false,
+  "loop": "all"
+}

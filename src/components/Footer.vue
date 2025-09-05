@@ -1,33 +1,23 @@
 <template>
   <footer id="footer" :class="store.footerBlur ? 'blur' : null">
-    <Transition name="fade" mode="out-in">
-      <div v-if="!store.playerState || !store.playerLrcShow" class="power">
-        <span>
-          Copyright&nbsp;&copy;
-          <span v-if="siteStartDate?.length >= 4" class="site-start">
-            {{ siteStartDate.substring(0, 4) }}
-            -
-          </span>
-          {{ fullYear }}
-          <a :href="siteUrl">{{ siteAnthor }}</a>
+    <!-- 始终显示版权信息，不显示歌词部分 -->
+    <div class="power">
+      <span>
+        Copyright&nbsp;&copy;
+        <span v-if="siteStartDate?.length >= 4" class="site-start">
+          {{ siteStartDate.substring(0, 4) }}
+          -
         </span>
+        {{ fullYear }}
+        <a :href="siteUrl">{{ siteAnthor }}</a>
+      </span>
 
-        <!-- 站点备案 -->
-        <a v-if="siteIcp" href="https://beian.miit.gov.cn" target="_blank">
-          &amp;
-          {{ siteIcp }}
-        </a>
-      </div>
-      <div v-else class="lrc">
-        <Transition name="fade" mode="out-in">
-          <div class="lrc-all" :key="store.getPlayerLrc">
-            <music-one theme="filled" size="18" fill="#efefef" />
-            <span class="lrc-text text-hidden" v-html="store.getPlayerLrc" />
-            <music-one theme="filled" size="18" fill="#efefef" />
-          </div>
-        </Transition>
-      </div>
-    </Transition>
+      <!-- 站点备案 -->
+      <a v-if="siteIcp" href="https://beian.miit.gov.cn" target="_blank">
+        &amp;
+        {{ siteIcp }}
+      </a>
+    </div>
   </footer>
 </template>
 
