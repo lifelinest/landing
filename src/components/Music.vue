@@ -94,6 +94,7 @@
                       size="20" 
                       fill="#efefef" 
                       class="pause-btn"
+                      @click.stop="pauseMusic"
                     />
                   </div>
                 </div>
@@ -182,6 +183,13 @@ const playMusic = (index) => {
     store.currentMusicIndex = index;
     // 触发播放
     playerRef.value.skipToIndex(index);
+    playerRef.value.playToggle();
+  }
+};
+
+// 暂停音乐播放
+const pauseMusic = () => {
+  if (playerRef.value) {
     playerRef.value.playToggle();
   }
 };
